@@ -1,0 +1,159 @@
+{%extends 'base.html'%}
+{%block body_block%}
+{% load static %}
+
+<style>
+    body {
+        height: 760vh;
+
+        background-color: #85FFBD;
+        background-image: linear-gradient(45deg, #85FFBD 0%, #dbbabd 100%);
+
+    }
+
+    .container-1 {
+        transform: translate(0, 50%);
+    }
+    .parent {
+        display: grid;
+        grid-gap: 5px;
+        grid-column-gap: 0px;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-row-gap: 5px;
+        grid-column-gap: 5px;
+        padding: 1em;
+    }
+</style>
+
+<div class="row ">
+    <div class="col-3">
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+        crossorigin="anonymous" />
+
+    <style>
+        .parent {
+            display: grid;
+            grid-gap: 5px;
+            grid-column-gap: 0px;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            grid-row-gap: 5px;
+            grid-column-gap: 5px;
+            padding: 1em;
+        }
+    </style>
+
+            <div class="card mt-3 ms-3 border-0 shadow rounded-pill" style="width: 80%; ">
+                <img src="{{request.user.profile.proimage.url}}"width="70%" class="card-img-top p-2 rounded-circle" alt="...">
+                <div class="card-body text-center">
+                    <p class="card-text" style="margin: 0;"><strong>@{{request.user}}</strong></p>
+                    <span><small class="">{{request.user.first_name}} </small></span>
+                    <span><small class="">{{request.user.last_name}} </small></span>
+                    <br>
+                    <a href="{% url 'profile' %}" class="btn btn-outline-info btn-sm mt-2"><small>View Profile</small></a>
+                </div> 
+            </div>
+
+            <div class="following">
+                <h5>Friends</h5>
+                <div class="card parent border-0 shadow-sm" style="width: 90%;">
+                    {% for f in followings %}
+                    <div class="card child rounded-5 border-0 shadow-sm" style="width: 100%;">
+                        <div class="card-body text-center">
+                            <img src="/images/contact.png" class="rounded-circle" width="100%" alt="">
+                            <small style="font-size: 0.8em;">{{f.user}}</small>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% comment %} <a href="{% url 'people' %}" class="btn btn-outline-info btn-sm mt-2"><small>Add Friends</small></a> {% endcomment %}
+
+                <a href="{%url 'people'%}"><button class="btn btn-info btn-sm mt-3 ms-5">Add More Friends</button></a>
+
+    
+            </div>
+    </div>
+    <div class="col-6">
+        
+        
+
+        {%for p in posts%}
+        <div class="card border-0 mt-3">
+
+            <div class="card-body">
+                <p><small><i class="fa-regular fa-user"></i>  {{p.user}}</small></p>
+                <p><small>{{p.title}}</small></p>
+                <small><i class="fa-regular fa-calendar-days"></i> {{p.created_date}}</small>                
+                <img src="{{p.image.url}}" alt="" width="100%">
+                {% comment %} <a href="{% url 'add-like' p.id %}"><i class="fa-regular fa-thumbs-up"></i>{{p.likes}} </a> {% endcomment %}
+                <a href="{% url 'add-like' p.id %}"><i class="fa-regular fa-heart"></i>  {{p.likes}} </a>
+
+
+
+
+                <hr>
+                <form action="{%url 'add-comment' p.id%}" method="post">
+                    {%csrf_token%}
+                    <input type="text" class="form-control border-info" placeholder="add comment..." name="comment" required >
+                    <button type="submit" class="btn btn-outline-info btn-sm mt-1">Add Comment</button>
+                </form>
+                <div>
+                    {%for comment in p.posts_comments%}
+                    <div class="card-body bg-light mt-2">
+                        <p style="display: inline;"><small><i class="fa-regular fa-user"></i>  {{comment.user}}</small></p>
+                        <small><i class="fa-regular fa-calendar-days"></i>   {{comment.created_date}}</small>
+                        <small><p><i class="fa-regular fa-comment"></i>  {{comment.comment}}</p></small>
+                    </div>
+                    {%endfor%}
+                </div>
+            </div>
+        </div>
+        {%endfor%}
+    </div>
+    <div class="col-3">
+
+        <div class="card border-0 mt-3 ms-4">
+            <h4 class="widget-title ms-3">Add Posts</h4>
+
+            <div class="card-body ">
+                <form action="" method="post" enctype="multipart/form-data">
+                    {%csrf_token%}
+                    {{form.as_p}}
+                    <input type="submit" class="btn btn-outline-primary form-control" value="submit">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- <form action="" method="post" enctype="multipart/form-data">
+    {%csrf_token%}
+    {{form.as_p}}
+    <input type="submit" value="submit">
+</form>
+{%for p in posts%}
+{{p.user}}
+{{p.title}}
+<img src="{{p.image.url}}" alt="">
+{{p.created_date}}
+
+{{p.likes}}
+<a href="{%url 'add-like' p.id%}"class="btn btn-outline-secondary">Like</a>
+
+<form action="{%url 'add-comment' p.id%}" method="post">
+    {%csrf_token%}
+    <input type="text" class="form-control" name="comment" required>
+    <button type="submit" class="btn btn-primary">Add comment</button>
+</form>
+
+    {%for comment in p.posts_comments%}
+    {{comment.user}}
+    {{comment.comment}}
+    {{comment.created_date}}
+    {%endfor%}
+
+{%endfor%}
+{%endblock%} -->

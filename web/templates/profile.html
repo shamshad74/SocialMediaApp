@@ -1,0 +1,104 @@
+{%extends 'index.html'%}
+{%block body_block%}
+{% load static %}
+
+<style>
+    body {
+        height: 170vh;
+
+        background-color: #85FFBD;
+        background-image: linear-gradient(45deg, #85FFBD 0%, #dbbabd 100%);
+
+    }
+
+    .container-1 {
+        transform: translate(0, 50%);
+    }
+</style>
+<link rel="stylesheet" href="/web/static/css/profile.css">
+<header>
+
+	<div class="container">
+
+		<div class="profile">
+
+			<div class="profile-image">
+				<img src="{{request.user.profile.proimage.url}}"width="70%" class="card-img-top p-2 rounded-circle" alt="...">
+
+
+				{% comment %} <img img src="{{p.image.url}}" alt="" height="200" width="200"> {% endcomment %}
+
+			</div>
+            
+			<div class="profile-user-settings">
+
+				<h1>@{{request.user}}</h1>
+				<h2>{{request.user.first_name}} {{request.user.last_name}}</h2>
+				<h2></h2>
+				<h2>{{request.user.email}}<br><br><br>
+
+				<button class="btn profile-edit-btn"><a href="{%url 'addprofile'%}">Edit Profile</a></button>
+
+				{% comment %} <button class="btn profile-settings-btn" aria-label="profile settings"><i class="fas fa-cog" aria-hidden="true"></i></button> {% endcomment %}
+
+			</div>
+
+			<div class="profile-stats">
+
+				
+					{% comment %} <li><span class="profile-stat-count">{{p.posts}}</span> posts</li>
+					<li><span class="profile-stat-count"></span> followers</li> {% endcomment %}
+					{% comment %} <a href="{%url 'people'%}"><button class="button-info">following</button></a> {% endcomment %}
+				
+
+			</div>
+
+			<div class="profile-bio">
+
+				{% comment %} <p><span class="profile-real-name">{{p.dob}}</span>dob:</p> {% endcomment %}
+
+			</div>
+
+		</div>
+		<!-- End of profile section -->
+
+	</div>
+	<!-- End of container -->
+
+</header>
+
+<main>
+
+	<div class="container">
+
+		<div class="gallery">
+            {%for p in posts%}
+
+			<div class="gallery-item" tabindex="0">
+
+				<img src="{{p.image.url}}" class="gallery-image" alt="">
+
+				<div class="gallery-item-info">
+
+					<ul>
+						<li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> {{p.likes}}</li>
+						<br><li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i>{{p.comments}}</li><br>
+                        {% comment %} <li class="gallery-item-delete"><span class="visually-hidden">Delete</span><a href="{%url 'post-delete' p.id %}"><i class="fas fa-trash" aria-hidden="true"></i></a></li> {% endcomment %}
+					</ul>
+
+				</div>
+            
+			</div>
+            {%endfor%}
+			
+
+		
+		<!-- End of gallery -->
+
+		<div class="loader"></div>
+
+	</div>
+	<!-- End of container -->
+
+</main>
+{%endblock%}

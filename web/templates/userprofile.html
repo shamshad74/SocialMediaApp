@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+{%load static%}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{%static 'css/loginstyle.css'%}">
+
+</head>
+<body>
+    <style>
+        body {
+            height: 170vh;
+    
+            background-color: #85FFBD;
+            background-image: linear-gradient(45deg, #85FFBD 0%, #dbbabd 100%);
+    
+        }
+    
+        .container-1 {
+            transform: translate(0, 50%);
+        }
+    </style>
+    <div class="center">
+        <h1>Edit Profile</h1>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-4">
+                <form action="" method="post" enctype="multipart/form-data">
+                    {%csrf_token%}
+                    {{form.as_p}}
+                    <input type="submit" value="add">
+                    <div class="signup_link">
+                        Back to Profile?<a href="{%url 'profile'%}">Exit</a>
+                      </div>
+                </form>
+            </div>
+            <div class="col-4"></div>
+        </div>
+    </div>
+    
+</body>
+</html>
